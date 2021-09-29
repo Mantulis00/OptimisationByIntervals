@@ -10,6 +10,8 @@ namespace OptimisationByIntervals
         private static double e = 0.001;
         private static double a = 5, b = 3;
 
+        //https://github.com/Mantulis00/OptimisationByIntervals/blob/master/OptimisationByIntervals/Program.cs
+        //https://www.desmos.com/calculator/nn2c4ccn0j
         private double FValue(double x)
         {
             return Math.Pow((x * x - a), 2) / b - 1;
