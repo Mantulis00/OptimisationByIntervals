@@ -7,7 +7,7 @@ namespace OptimisationByIntervals
 {
     internal class Optimiser
     {
-        private static double e = 0.0001;
+        private static double e = 0.001;
         private static double a = 5, b = 3;
 
         //https://github.com/Mantulis00/OptimisationByIntervals/blob/master/OptimisationByIntervals/Program.cs
@@ -18,12 +18,12 @@ namespace OptimisationByIntervals
         }
         private double FValueD(double x)
         {
-            return 4 / 3 * x * (x * x - 5);
+            return 4*x/b * (x*x-a);
         }
 
         private double FValueD2(double x)
         {
-            return (12 * x * x - 20 ) / 3;
+            return (12*x*x - 4 * a )/ b;
         }
 
         private delegate void OptimiseMethod(ref double l, ref double r, ref double L);
@@ -161,7 +161,9 @@ namespace OptimisationByIntervals
         internal void OptimiseByNewton(ref double l, ref double r, ref double L)
         {
             double xi = (l+r)/ 2; // skirta funkcijos generalizavimui nes l = r
-            L = FValueD(xi) / Math.Abs(FValueD2(xi)); // Moduliu, tam, kad ieskotų tik minimumų (ne maximumų)
+            double d = FValueD(xi);
+            double d2 = FValueD2(xi);
+            L = (d / d2); // Moduliu, tam, kad ieskotų tik minimumų (ne maximumų)
             l = xi - L;
             r = l; // skirta generalizavimui
         }
