@@ -78,6 +78,7 @@ namespace OptimisationByIntervals
                     Results.Add(SamplePoints[x][y].ToString().Replace(',', '.') + "\t" + FValue(SamplePoints[x][y]).ToString().Replace(',', '.'));
                 }
             }
+
             WriteRecordedPoints();
         }
 
@@ -89,8 +90,6 @@ namespace OptimisationByIntervals
         internal double Optimise(double l, double r, OptimiseMethods method)
         {
             OptimiseMethod optimiseMethod = SelectedOptimiseMethod(method);
-            
-
 
             double L = double.PositiveInfinity;
             if (method == OptimiseMethods.Newton)
@@ -101,12 +100,12 @@ namespace OptimisationByIntervals
             }
 
             int counter = 0;
-            while (Math.Abs(L )> e)
+            while (Math.Abs(L) > e)
             {
                 counter++;
                 RecordPoints(l, r);
-                optimiseMethod(ref l, ref r, ref L) ;
-            }
+                optimiseMethod(ref l, ref r, ref L);
+            } 
 
             PrintRecordPoints();
             Console.WriteLine("\n\nTook: " + counter + " Iterations");
@@ -116,7 +115,7 @@ namespace OptimisationByIntervals
         internal void OptimiseByDevidingInHalf(ref double l,ref double r, ref double L)
         {
             L = (r - l) / 2;
-            double offset = L / 4;
+            double offset = L / 2;
             double xl = l + offset;
             double xr = r - offset;
             double xm = (l + r) / 2;
@@ -139,10 +138,10 @@ namespace OptimisationByIntervals
         private static double tau = 0.61803398875;
         internal void OptimiseByDevidingByGoldenRatio(ref double l, ref double r, ref double L)
         {
-            L = (r - l) / 2;
+            L = (r - l) ;
             double offset = L * tau;
-            double xl = l + offset;
-            double xr = r - offset;
+            double xr = l + offset;
+            double xl = r - offset;
 
             double fl = FValue(xl);
             double fr = FValue(xr);
@@ -161,11 +160,10 @@ namespace OptimisationByIntervals
 
         internal void OptimiseByNewton(ref double l, ref double r, ref double L)
         {
-            double xi = (l+r)/ 2;
-            L = FValueD(xi) / Math.Abs(FValueD2(xi));
+            double xi = (l+r)/ 2; // skirta funkcijos generalizavimui nes l = r
+            L = FValueD(xi) / Math.Abs(FValueD2(xi)); // Moduliu, tam, kad ieskotų tik minimumų (ne maximumų)
             l = xi - L;
-            r = l;
-            Console.WriteLine(l);
+            r = l; // skirta generalizavimui
         }
     }
 
@@ -177,7 +175,7 @@ namespace OptimisationByIntervals
         static void Main(string[] args)
         {
             Optimiser optimiser = new Optimiser();
-            double xmin = optimiser.Optimise(from, to, Optimiser.OptimiseMethods.DevideInHalfs);
+            double xmin = optimiser.Optimise(from, to, Optimiser.OptimiseMethods.Newton);
 
 
             Console.WriteLine(xmin);
