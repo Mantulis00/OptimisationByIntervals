@@ -7,7 +7,7 @@ namespace OptimisationByIntervals
 {
     internal class Optimiser
     {
-        private static double e = 0.001;
+        private static double e = 0.0001;
         private static double a = 5, b = 3;
 
         //https://github.com/Mantulis00/OptimisationByIntervals/blob/master/OptimisationByIntervals/Program.cs
@@ -147,15 +147,9 @@ namespace OptimisationByIntervals
             double fr = FValue(xr);
 
             if (fr < fl)
-            {
                 l = xr ;
-                r = l + offset;
-            }
             else 
-            {
                 r = xl ;
-                l = r - offset;
-            }
         }
 
         internal void OptimiseByNewton(ref double l, ref double r, ref double L)
@@ -177,7 +171,7 @@ namespace OptimisationByIntervals
         static void Main(string[] args)
         {
             Optimiser optimiser = new Optimiser();
-            double xmin = optimiser.Optimise(from, to, Optimiser.OptimiseMethods.Newton);
+            double xmin = optimiser.Optimise(from, to, Optimiser.OptimiseMethods.DevideByGoldenRatio);
 
 
             Console.WriteLine(xmin);
